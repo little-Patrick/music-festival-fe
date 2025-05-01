@@ -1,6 +1,6 @@
 import './ScheduleContainer.css';
 import { useState, useEffect } from 'react';
-import getSchedules from '../../apiCall.js'
+import { getSchedules } from '../../apiCall.js'
 import ScheduleCard from '../ScheduleCard/ScheduleCard.jsx'
 
 const ScheduleContainer = () => {
@@ -11,11 +11,11 @@ const ScheduleContainer = () => {
 
 	useEffect(() => {
 		getSchedules()
-			.then(userSchedules => {
-				setSchedules(userSchedules.data);
+			.then(Schedules => {
+				setSchedules(Schedules.data);
 			})
-			.catch(() => {
-				setError('Failed to Load Schedules');
+			.catch((e) => {
+				setError(e.message);
 			})
 			.finally(() => {
 				setLoading(false);
@@ -29,6 +29,7 @@ const ScheduleContainer = () => {
 		return (
 			<ScheduleCard
 				key={schedule.id}
+				id={schedule.id}
 				title={schedule.attributes.title}
 				date={schedule.attributes.date}
 				user={schedule.attributes.user}
@@ -37,7 +38,7 @@ const ScheduleContainer = () => {
 	});
 
 	return (
-		<div className='schedule-container'>
+		<div className='container'>
 			{scheduleCards}
 		</div>
 	)
